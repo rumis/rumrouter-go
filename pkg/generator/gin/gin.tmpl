@@ -1,0 +1,20 @@
+package {{.PackageName}}
+
+import (
+    {{- range $idx,$ele := .Imports}}
+    "{{$ele}}"
+    {{- end}}
+)
+
+func InitRouter(app *gin.Engine) {
+	{{- range $idx,$group := .RouterGroups}}
+
+	g{{$idx}} := app.Group("{{$group.Prefix}}"{{MiddleName $group.Middleware}})
+	g{{$group.PackName}}Inst := {{$group.Name}}{}
+	{{- range $i,$router := $group.Routers}}
+	{{- range $j,$method := $router.Methods}}
+	g{{$idx}}.{{$method}}("{{$router.Path}}"{{MiddleName $router.Middleware}},g{{$group.PackName}}Inst.{{$router.Name}})
+	{{- end}}	
+	{{- end}}
+	{{- end}}
+}

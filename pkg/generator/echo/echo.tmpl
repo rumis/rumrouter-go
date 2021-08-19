@@ -1,0 +1,20 @@
+package {{.PackageName}}
+
+import (
+    {{- range $idx,$ele := .Imports}}
+    "{{$ele}}"
+    {{- end}}
+)
+
+func InitRouter(app *echo.Echo) {
+	{{- range $idx,$group := .RouterGroups}}
+
+	g{{$idx}} := app.Group("{{$group.Prefix}}"{{MiddleName $group.Middleware}})
+	g{{$group.PackName}}Inst := {{$group.Name}}{}
+	{{- range $i,$router := $group.Routers}}
+	{{- range $j,$method := $router.Methods}}
+	g{{$idx}}.{{$method}}("{{$router.Path}}",g{{$group.PackName}}Inst.{{$router.Name}}{{MiddleName $router.Middleware}})
+	{{- end}}	
+	{{- end}}
+	{{- end}}
+}
