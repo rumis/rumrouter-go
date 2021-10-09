@@ -145,6 +145,9 @@ func extractOperation(decl ast.Decl) *model.Operation {
 	mOperation := model.Operation{
 		DocLines: extractComments(funcDecl.Doc),
 	}
+	if len(mOperation.DocLines) == 0 {
+		return nil
+	}
 	if funcDecl.Recv != nil {
 		recv := extractReceiver(funcDecl.Recv)
 		if recv != nil {
@@ -168,7 +171,9 @@ func extractReceiver(fieldList *ast.FieldList) *model.Receiver {
 	if recv == nil {
 		return nil
 	}
-
+	if len(field.Names) == 0 {
+		return nil
+	}
 	if field.Names[0] != nil {
 		recv.Name = field.Names[0].Name
 	}
