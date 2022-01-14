@@ -47,7 +47,7 @@ func extractAnnotation(line string) (Annotation, error) {
 		default:
 			switch curAnnoType {
 			case AttrValue:
-				anno.Attrs[strings.ToLower(attrName)] = strings.ToLower(strings.Trim(s.TokenText(), "\""))
+				anno.Attrs[strings.ToLower(attrName)] = strings.Trim(s.TokenText(), "\"")
 			}
 		}
 	}
