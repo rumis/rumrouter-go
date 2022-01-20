@@ -112,6 +112,14 @@ func GenerateFromTempAnnotation(opts interim.GenerateOption) error {
 	if err != nil {
 		return err
 	}
+
+	// 检查原文件是否存在，如存在则删除
+	_, err = os.Stat(opts.OutFileName)
+	if err == nil {
+		os.Remove(opts.OutFileName)
+	}
+
+	// 构建目录并生成文件
 	err = os.MkdirAll(path.Dir(opts.OutFileName), 0755)
 	if err != nil {
 		return err
