@@ -21,6 +21,8 @@ RumRouter是一个基于注解自动生成路由代码的工具
             package name,default is rumrouter (default "rumrouter")
     -t string
             framework type, now echo,echov4,gin is available (default "echov4")
+    -n string
+            namespace, default is empty ,only namespace in defined and matched,the router will be init
 
 
 `-i` 我们项目的根目录，必须包含`go.mod`文件，也就是要求我们的项目必须是使用`go mod`做包管理的。
@@ -30,6 +32,8 @@ RumRouter是一个基于注解自动生成路由代码的工具
 `-p` 生成的路由代码的包名称，需要和参数`-i`配合使用，这样最终生成的代码才方便直接使用。
 
 `-t` 框架类型，目前支持`gin`,`echo`,`echov4`三种，默认为`echov4`
+
+`-n` 命名空间，默认值为空，只有路由以及命令都包含命名空间时才进行匹配，如果不匹配则在生成的路由中忽略
 
 ### 使用
 
@@ -45,15 +49,15 @@ RumRouter是一个基于注解自动生成路由代码的工具
 
 ##### 路由组
 
-    // @RouterGroup(middleware="auth",prefix="/user")
+    // @RouterGroup(middleware="auth",prefix="/user",namespace="app")
 
-路由组包含两个属性，`prefix`表示本路由组中所有路由的统一前缀。`middleware`表示应用于本路由组的中间件名称，名称在定义中间件注解时定义。支持一次定义多个中间件名称，通过逗号隔开，按照定义顺序中间件会依次执行。
+路由组包含两个属性，`prefix`表示本路由组中所有路由的统一前缀。`middleware`表示应用于本路由组的中间件名称，名称在定义中间件注解时定义。支持一次定义多个中间件名称，通过逗号隔开，按照定义顺序中间件会依次执行。`namespace`表示本路由组定义的命名空间，如果不匹配则路由组中全部不会都不会生成。
 
 ##### 路由
 
-    // @Router(method="options",path="/getconfig",middleware="auth")
+    // @Router(method="options",path="/getconfig",middleware="auth",namespace="app")
 
-路由包含三个属性，`middleware`和路由组中的使用方式完全一致。 `method`表示该路由支持HTTP METHOD，需要注意的是mehtod在使用时一定需要和我们使用的框架匹配，一定是需要框架支持的，否则会报错。`path`表示该路由的部分请求路径，此处和路由组中的`prefix`组成完成的请求路径。
+路由包含三个属性，`middleware`和路由组中的使用方式完全一致。 `method`表示该路由支持HTTP METHOD，需要注意的是mehtod在使用时一定需要和我们使用的框架匹配，一定是需要框架支持的，否则会报错。`path`表示该路由的部分请求路径，此处和路由组中的`prefix`组成完成的请求路径。`namespace`表示本路由所属的命名空间，如果不匹配则路由最终不会生成。
 
 
 #### 示例代码

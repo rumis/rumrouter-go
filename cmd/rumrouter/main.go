@@ -20,7 +20,7 @@ func main() {
 	var packName = flag.String("p", "rumrouter", "package name,default is rumrouter")
 	var inputSourcePath = flag.String("i", dir, "input source code dirctory,default is current work dirctory")
 	var outputPath = flag.String("o", path.Join(dir, "rumrouter"), "router code dirctory,default is rumrouter")
-	var namespace = flag.String("n", "", "namespace default is empty , only space in defined router will be init")
+	var namespace = flag.String("n", "", "namespace, default is empty ,only namespace in defined and matched,the router will be init")
 	flag.Parse()
 
 	opts := config.Options{
