@@ -35,6 +35,11 @@ func ExtractTmplAnnotation(opts config.Options) (interim.TemplateAnnotation, err
 			if err != nil {
 				continue
 			}
+			// check is it contains the namespace
+			if !opts.IsContains(routerGroup.Namespace) {
+				continue
+			}
+
 			// keep the package path
 			packages[group.PackagePath] = group.PackagePath
 
@@ -56,6 +61,11 @@ func ExtractTmplAnnotation(opts config.Options) (interim.TemplateAnnotation, err
 				if err != nil {
 					continue
 				}
+				// check is it contains the namespace
+				if !opts.IsContains(router.Namespace) {
+					continue
+				}
+
 				inteRouter := interim.Router{
 					Path:       router.Path,
 					Methods:    strings.Split(strings.ToUpper(router.Method), ","),
