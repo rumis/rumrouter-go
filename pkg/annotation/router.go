@@ -5,4 +5,5 @@ type Router struct {
 	Method     string `json:"method"`
 	Middleware string `json:"middleware"`
 	Namespace  string `json:"namespace"`
+	Context    string `json:"context"`
 }

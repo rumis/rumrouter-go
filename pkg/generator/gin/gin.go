@@ -1,7 +1,9 @@
 package gin
 
 import (
+	"fmt"
 	"path"
+	"strings"
 
 	"github.com/rumis/rumrouter-go/pkg/config"
 	"github.com/rumis/rumrouter-go/pkg/generator/builder"
@@ -23,7 +25,7 @@ func InitRouter(app *gin.Engine) {
 	g{{$group.PackName}}Inst := {{$group.Name}}{}
 	{{- range $i,$router := $group.Routers}}
 	{{- range $j,$method := $router.Methods}}
-	g{{$idx}}.{{$method}}("{{$router.Path}}"{{MiddleName $router.Middleware}},g{{$group.PackName}}Inst.{{$router.Name}})
+	g{{$idx}}.{{$method}}("{{$router.Path}}"{{Context $router.Context}}{{MiddleName $router.Middleware}},g{{$group.PackName}}Inst.{{$router.Name}})
 	{{- end}}	
 	{{- end}}
 	{{- end}}
@@ -44,6 +46,20 @@ func initGin(tmplAnno interim.TemplateAnnotation, out string) error {
 		Tmpl:        ginTmplStr,
 		TmplAnno:    tmplAnno,
 		OutFileName: out,
+		Funcs: map[string]interface{}{
+			"Context": func(ctx string) string {
+				if ctx == "" {
+					return ""
+				}
+				kvs := strings.Split(ctx, ",")
+				opts := []string{}
+				for _, v := range kvs {
+					idx := strings.Index(v, "=")
+					opts = append(opts, fmt.Sprintf("c.Set(\"%s\",%s)", v[:idx], v[idx+1:]))
+				}
+				return fmt.Sprintf("%s%s%s", ",func(c *gin.Context){", strings.Join(opts, ";"), `}`)
+			},
+		},
 	}
 	return builder.GenerateFromTempAnnotation(opts)
 }

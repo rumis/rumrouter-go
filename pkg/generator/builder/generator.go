@@ -1,10 +1,10 @@
 package builder
 
 import (
-	"html/template"
 	"os"
 	"path"
 	"strings"
+	"text/template"
 
 	"github.com/rumis/rumrouter-go/pkg/annotation"
 	"github.com/rumis/rumrouter-go/pkg/config"
@@ -71,6 +71,7 @@ func ExtractTmplAnnotation(opts config.Options) (interim.TemplateAnnotation, err
 					Methods:    strings.Split(strings.ToUpper(router.Method), ","),
 					Name:       opera.Name,
 					Middleware: router.Middleware,
+					Context:    router.Context,
 				}
 				relRouterGroupName := path.Join(opera.RelatedStruct.PackagePath, opera.RelatedStruct.TypeName)
 				routerGroup, ok := routerGroupMap[relRouterGroupName]

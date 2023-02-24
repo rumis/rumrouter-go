@@ -5,4 +5,5 @@ type Router struct {
 	Methods    []string
 	Name       string
 	Middleware string
+	Context    string
 }

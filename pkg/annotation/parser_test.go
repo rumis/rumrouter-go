@@ -1,6 +1,8 @@
 package annotation
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestParseRouterGroup(t *testing.T) {
 	g := "// @RouterGroup(Middleware=\"m2,m1\",prefix=\"/user\",namespace=\"app\")"
@@ -20,7 +22,7 @@ func TestParseRouterGroup(t *testing.T) {
 }
 
 func TestParseRouter(t *testing.T) {
-	r1 := "// @Router(method=\"GET,POST\",path=\"/getconfig\",namespace=\"app,api\")"
+	r1 := "// @Router(method=\"GET,POST\",path=\"/getconfig\",namespace=\"app,api\",context=\"x=3,y=4\")"
 	r1a, err := ParseRouter(r1)
 	if err != nil {
 		t.Error(err)
@@ -34,6 +36,11 @@ func TestParseRouter(t *testing.T) {
 	if r1a.Namespace != "app,api" {
 		t.Error("router namespace parse failed")
 	}
+
+	if r1a.Context != "x=3,y=4" {
+		t.Error("router context parse failed")
+	}
+
 	r2 := "// @Router(method=\"options\",path=\"/getconfig\",middleware=\"auth\")"
 	r2a, err := ParseRouter(r2)
 	if err != nil {

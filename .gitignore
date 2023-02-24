@@ -3,3 +3,4 @@ go.sum
 *.gen.go
 cmd/rumrouter/rum
 cmd/rumrouter/rumrouter
+test
