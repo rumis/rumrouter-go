@@ -47,7 +47,7 @@ func ExtractTmplAnnotation(opts config.Options) (interim.TemplateAnnotation, err
 				Prefix:     routerGroup.Prefix,
 				Middleware: routerGroup.Middleware,
 				Name:       group.PackageName + "." + group.Name,
-				PackName:   group.Name,
+				PackName:   strings.ToTitle(group.PackageName) + group.Name,
 			}
 			routerGroupMap[path.Join(group.PackagePath, group.Name)] = inteRouteGroup
 		}
